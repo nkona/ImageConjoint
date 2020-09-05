@@ -1,0 +1,42 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-start {
+  background-color:#da7e16;
+	border-radius: 4px;
+	border: 1px solid #c27209;
+	display: inline-block;
+	cursor: pointer;
+  color:#ffffff;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 5px 10px 5px 10px;
+}
+
+.App-photo {
+  height: 50vh;
+  width: auto;
+}
+
+.App-button {
+	background-color:#133106;
+	border-radius: 4px;
+	border: 1px solid #0c2003;
+	display: inline-block;
+	cursor: pointer;
+	color:#ffffff;
+  font-weight: bold;
+  margin-left: 10px;
+}
