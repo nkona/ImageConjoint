@@ -96,7 +96,7 @@ export default class Refine extends React.Component {
           <form onSubmit={this.handleSubmit}>
             <label htmlFor="rating">Enter your rating for this dress</label>
             <br></br>
-            <input id="rating" name="rating" type="number" step="0.1" min="0" max="10"/>
+            <input id="rating" name="rating" type="number" step="0.1" min="0" max="10" required/>
             <button className="App-button">Submit</button>
             <br></br>
           </form>
