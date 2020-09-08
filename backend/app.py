@@ -107,7 +107,7 @@ def load_rating_initial():
     print(rating)
     global ratings
     ratings.append(float(rating))
-    return "OK"
+    return {'completed': True}
 
 
 
@@ -141,7 +141,7 @@ def build_model():
     global pref_model
     pref_model = PrefOptim(x, y, GP_NOISE, nd)
     print("OK")
-    return "OK"
+    return {'completed': True}
 
 
 
@@ -195,7 +195,7 @@ def load_rating_refine():
     global items_shown
     item_id = items_shown[-1]
     pref_model.update_posterior(torch.tensor([float(rating)]), z[item_id])
-    return "OK"
+    return {'completed': True}
 
 
 
@@ -248,7 +248,7 @@ def calc_results():
     predicted_ratings = final_mu[test_items]
     test_ratings = []
     print("OK")
-    return "OK"
+    return {'completed': True}
 
 
 
@@ -285,7 +285,7 @@ def load_rating_test():
     print(rating)
     global test_ratings
     test_ratings.append(float(rating))
-    return "OK"
+    return {'completed': True}
 
 
 

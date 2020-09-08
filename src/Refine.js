@@ -50,13 +50,16 @@ export default class Refine extends React.Component {
   }
 
   // Finish the refining stage
-  nextStage()
+  async nextStage()
   {
     // Call ahead to calculate testing items
-    fetch('/calc_results', {
+    const response = await fetch('/calc_results', {
       method: 'POST',
       body: "",
     });
+
+    // Let model build then move onto testing stage if error-free
+    const completed = await response.json()
     window.location.href = "/end_refine"
   }
 
@@ -66,18 +69,20 @@ export default class Refine extends React.Component {
     event.preventDefault();
     const data = new FormData(event.target);
 
-    fetch('/refine_receive', {
-      method: 'POST',
-      body: data,
-    });
-    
+    // Unload current image and rating
     document.getElementById('rating').value = "";
     this.setState({
       img: ""
     });
 
+    // Send rating to model and await calculation
+    const response = await fetch('/refine_receive', {
+      method: 'POST',
+      body: data,
+    });
+
     // Let model build before attempting to load next rating
-    await this.timeout(3000);
+    const completed = await response.json()
     this.componentDidMount();
   }
 

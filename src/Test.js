@@ -46,20 +46,25 @@ export default class Test extends React.Component {
   }
 
   // Submit the rating to model and refresh
-  handleSubmit(event) 
+  async handleSubmit(event) 
   {
     event.preventDefault();
     const data = new FormData(event.target);
 
-    fetch('/test_receive', {
-      method: 'POST',
-      body: data,
-    });
-    
+    // Unload current image and rating
     document.getElementById('rating').value = "";
     this.setState({
       img: ""
     });
+
+    // Send rating to model and await completion
+    const response = await fetch('/test_receive', {
+      method: 'POST',
+      body: data,
+    });
+    
+    // Let model store rating before attempting to load next image
+    const completed = await response.json()
     this.componentDidMount();
   }
 

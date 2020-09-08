@@ -53,31 +53,36 @@ export default class Initial extends React.Component {
   async nextStage()
   {
     // Call ahead to build the model
-    fetch('/build_model', {
+    const response = await fetch('/build_model', {
       method: 'POST',
       body: "",
     });
 
-    // Let model build then move onto refining stage
-    await this.timeout(3000);
+    // Let model build then move onto refining stage if error-free
+    const completed = await response.json()
     window.location.href = "/end_initial"
   }
 
   // Submit the rating to model and refresh
-  handleSubmit(event) 
+  async handleSubmit(event) 
   {
     event.preventDefault();
     const data = new FormData(event.target);
 
-    fetch('/initial_receive', {
-      method: 'POST',
-      body: data,
-    });
-
+    // Unload current image and rating
     document.getElementById('rating').value = "";
     this.setState({
       img: ""
     });
+
+    // Send rating to model and await calculation
+    const response = await fetch('/initial_receive', {
+      method: 'POST',
+      body: data,
+    });
+
+    // Let model store rating before attempting to load next image
+    const completed = await response.json()
     this.componentDidMount();
   }
 
