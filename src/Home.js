@@ -1,12 +1,33 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {instanceOf} from 'prop-types';
+import {withCookies, Cookies} from 'react-cookie';
 import './App.css';
 
 // Launch page for the app - button sends to Initial image ratings
-export default class Home extends React.Component {
+class Home extends React.Component {
 
-  constructor() {
-    super();
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
+
+  constructor(props) {
+    super(props);
+    const {cookies} = props;
+  }
+
+  // React function that is called when the page loads.
+  async componentDidMount() {
+    const {cookies} = this.props;
+    console.log(cookies.get('user'));
+    if (cookies.get('user') === undefined) {
+      // Send an HTTP request to the server.
+      const response = await fetch(
+        '/create_user', {method: 'GET'} // The type of HTTP request.
+      );
+      const data = await response.json()
+      cookies.set('user', data.user_id, {path: '/', maxAge: 3600});
+    }
   }
 
   render() {
@@ -29,3 +50,5 @@ export default class Home extends React.Component {
     );
   }
 }
+
+export default withCookies(Home);

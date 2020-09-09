@@ -1,13 +1,21 @@
 import React from 'react';
+import {instanceOf} from 'prop-types';
+import {withCookies, Cookies} from 'react-cookie';
 import './App.css';
 
 // Conducts the testing ratings - button submits rating and loads next
-export default class Test extends React.Component {
+class Test extends React.Component {
 
-  constructor() {
-    super();
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
+
+  constructor(props) {
+    super(props);
+    const {cookies} = props;
     this.state = {
-      img: ""
+      img: "",
+      user: cookies.get('user')
     }
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -16,7 +24,7 @@ export default class Test extends React.Component {
   componentDidMount() {
     // Send an HTTP request to the server.
     fetch(
-      '/test_send', {method: 'GET'} // The type of HTTP request.
+      '/test_send/' + this.state.user, {method: 'GET'} // The type of HTTP request.
     ).then(
       res => {
         // Convert the response data to a JSON.
@@ -58,7 +66,7 @@ export default class Test extends React.Component {
     });
 
     // Send rating to model and await completion
-    const response = await fetch('/test_receive', {
+    const response = await fetch('/test_receive/' + this.state.user, {
       method: 'POST',
       body: data,
     });
@@ -87,3 +95,5 @@ export default class Test extends React.Component {
     );
   }
 }
+
+export default withCookies(Test);

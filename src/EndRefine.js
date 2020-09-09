@@ -1,12 +1,19 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {instanceOf} from 'prop-types';
+import {withCookies, Cookies} from 'react-cookie';
 import './App.css';
 
 // Closes out refining ratings and shows instructions for testing stage
-export default class EndRefine extends React.Component {
+class EndRefine extends React.Component {
 
-  constructor() {
-    super();
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
+
+  constructor(props) {
+    super(props);
+    const {cookies} = props;
     this.state = {
       num_testing: 0
     }
@@ -30,7 +37,7 @@ export default class EndRefine extends React.Component {
         // Act on data
         this.setState({
           // Load number of ratings in this stage
-          rum_testing: data.num_testing
+          num_testing: data.num_testing
         });
       }, err => {
         // Print the error if there is one.
@@ -58,3 +65,5 @@ export default class EndRefine extends React.Component {
     );
   }
 }
+
+export default withCookies(EndRefine);

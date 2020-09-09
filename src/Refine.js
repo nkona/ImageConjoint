@@ -1,13 +1,21 @@
 import React from 'react';
+import {instanceOf} from 'prop-types';
+import {withCookies, Cookies} from 'react-cookie';
 import './App.css';
 
 // Conducts the refining ratings - button submits rating and loads next
-export default class Refine extends React.Component {
+class Refine extends React.Component {
 
-  constructor() {
-    super();
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
+
+  constructor(props) {
+    super(props);
+    const {cookies} = props;
     this.state = {
-      img: ""
+      img: "",
+      user: cookies.get('user')
     }
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -16,7 +24,7 @@ export default class Refine extends React.Component {
   componentDidMount() {
     // Send an HTTP request to the server.
     fetch(
-      '/refine_send', {method: 'GET'} // The type of HTTP request.
+      '/refine_send/' + this.state.user, {method: 'GET'} // The type of HTTP request.
     ).then(
       res => {
         // Convert the response data to a JSON.
@@ -53,7 +61,7 @@ export default class Refine extends React.Component {
   async nextStage()
   {
     // Call ahead to calculate testing items
-    const response = await fetch('/calc_results', {
+    const response = await fetch('/calc_results/' + this.state.user, {
       method: 'POST',
       body: "",
     });
@@ -76,7 +84,7 @@ export default class Refine extends React.Component {
     });
 
     // Send rating to model and await calculation
-    const response = await fetch('/refine_receive', {
+    const response = await fetch('/refine_receive/' + this.state.user, {
       method: 'POST',
       body: data,
     });
@@ -105,3 +113,5 @@ export default class Refine extends React.Component {
     );
   }
 }
+
+export default withCookies(Refine);

@@ -1,12 +1,19 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {instanceOf} from 'prop-types';
+import {withCookies, Cookies} from 'react-cookie';
 import './App.css';
 
 // Closes out initial ratings and shows instructions for refining stage
-export default class EndInitial extends React.Component {
+class EndInitial extends React.Component {
 
-  constructor() {
-    super();
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
+
+  constructor(props) {
+    super(props);
+    const {cookies} = props;
     this.state = {
       num_refining: 0
     }
@@ -58,3 +65,5 @@ export default class EndInitial extends React.Component {
     );
   }
 }
+
+export default withCookies(EndInitial);
