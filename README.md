@@ -1,7 +1,7 @@
 ## TO-DO
 
-- Model dictionary with variables by user ID
-- Add user cookie for multi-user usage
+- Improve stability for multi-user login
+- Port to cloud host/server and acquire domain
 
 
 ## Setting Up
